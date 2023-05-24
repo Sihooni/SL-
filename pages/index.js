@@ -1,15 +1,29 @@
-import { useState } from 'react';
 import Head from 'next/head'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
-  const [memo, setMemo] = useState('');
+  const [memo, setMemo] = useState('')
+  const [memos, setMemos] = useState([])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetch('/.netlify/functions/fetch-memos')
+      .then(response => response.json())
+      .then(data => {
+        setMemos(data)
+      })
+  }, [])
 
-    // Here we will call our serverless function
+  const handleSubmit = async event => {
+    event.preventDefault()
+    const response = await fetch('/.netlify/functions/submit-memo', {
+      method: 'POST',
+      body: JSON.stringify({ memo }),
+    })
+    const data = await response.json()
+    setMemos([...memos, data])
+    setMemo('')
   }
 
   return (
@@ -24,34 +38,16 @@ export default function Home() {
         <p className="description">
           Get started by editing <code>pages/index.js</code>
         </p>
-
         <form onSubmit={handleSubmit}>
-          <input 
-            type="text"
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-            placeholder="Write your memo here..."
-          />
+          <input type="text" value={memo} onChange={e => setMemo(e.target.value)} required />
           <button type="submit">Submit</button>
         </form>
-
+        {memos.map((memo, index) => (
+          <p key={index}>{memo.data.memo}</p>
+        ))}
       </main>
 
       <Footer />
     </div>
   )
 }
-// ...
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const response = await fetch('/.netlify/functions/saveMemo', {
-    method: 'POST',
-    body: JSON.stringify({ memo }),
-  });
-
-  // Handle response here
-};
-
-// ...
