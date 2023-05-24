@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Memo App</title>
+</head>
+
+<body>
+  <h1>Memo App</h1>
+
+  <form action="/submit" method="post">
+    <textarea name="memo" placeholder="Write your memo here..." required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const memo = formData.get('memo');
+      await fetch('/api/memos', {
+        method: 'POST',
+        body: JSON.stringify({ memo }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      alert('Memo submitted successfully!');
+      event.target.reset();
+    });
+  </script>
+</body>
+
+</html>
