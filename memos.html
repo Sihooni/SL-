@@ -1,31 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Memo List</title>
+  <title>Stored Memos</title>
+  <script src="memos.js"></script>
 </head>
-
 <body>
-  <h1>Memo List</h1>
-
-  <ul id="memo-list"></ul>
-
-  <script>
-    fetch('/api/memos')
-      .then((response) => response.json())
-      .then((data) => {
-        const memos = data.memos;
-        const memoList = document.getElementById('memo-list');
-        memos.forEach((memo) => {
-          const listItem = document.createElement('li');
-          listItem.textContent = memo;
-          memoList.appendChild(listItem);
-        });
-      });
-  </script>
+  <h1>Stored Memos</h1>
+  <div id="memoList"></div>
 </body>
-
 </html>
