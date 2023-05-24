@@ -1,9 +1,9 @@
-// netlify/functions/saveMemo.js
+const faunadb = require('faunadb');
 
-const fs = require('fs');
-const path = require('path');
+const client = new faunadb.Client({ secret: process.env.FAUNA_SECRET });
+const q = faunadb.query;
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -11,7 +11,11 @@ exports.handler = async (event) => {
   const { memo } = JSON.parse(event.body);
 
   try {
-    fs.writeFileSync(path.resolve(__dirname, '..', 'memo.txt'), memo);
+    await client.query(
+      q.Create(q.Collection('memos'), {
+        data: { memo },
+      })
+    );
     return { statusCode: 200, body: 'Memo saved' };
   } catch (error) {
     return { statusCode: 500, body: 'Error saving memo' };
