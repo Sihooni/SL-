@@ -16,7 +16,8 @@
   <script>
     fetch('/api/memos')
       .then((response) => response.json())
-      .then((memos) => {
+      .then((data) => {
+        const memos = data.memos;
         const memoList = document.getElementById('memo-list');
         memos.forEach((memo) => {
           const listItem = document.createElement('li');

@@ -1,6 +1,6 @@
 // memos.js
 
-const memos = [];
+let memos = [];
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'POST') {
@@ -15,7 +15,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'GET') {
     return {
       statusCode: 200,
-      body: JSON.stringify(memos)
+      body: JSON.stringify({ memos })
     };
   }
 
