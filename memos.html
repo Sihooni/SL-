@@ -14,7 +14,7 @@
   <ul id="memo-list"></ul>
 
   <script>
-    fetch('/.netlify/functions/memos')
+    fetch('/api/memos')
       .then((response) => response.json())
       .then((memos) => {
         const memoList = document.getElementById('memo-list');
