@@ -1,30 +1,24 @@
 import Head from 'next/head'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function Home() {
-  const [memo, setMemo] = useState('')
-  const [memos, setMemos] = useState([])
+  const [memo, setMemo] = useState('');
 
-  useEffect(() => {
-    fetch('/.netlify/functions/fetch-memos')
-      .then(response => response.json())
-      .then(data => {
-        setMemos(data)
-      })
-  }, [])
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleSubmit = async event => {
-    event.preventDefault()
-    const response = await fetch('/.netlify/functions/submit-memo', {
+    await fetch('/.netlify/functions/saveMemo', {
       method: 'POST',
       body: JSON.stringify({ memo }),
-    })
-    const data = await response.json()
-    setMemos([...memos, data])
-    setMemo('')
-  }
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    setMemo('');
+  };
 
   return (
     <div className="container">
@@ -39,12 +33,9 @@ export default function Home() {
           Get started by editing <code>pages/index.js</code>
         </p>
         <form onSubmit={handleSubmit}>
-          <input type="text" value={memo} onChange={e => setMemo(e.target.value)} required />
+          <textarea value={memo} onChange={(e) => setMemo(e.target.value)} />
           <button type="submit">Submit</button>
         </form>
-        {memos.map((memo, index) => (
-          <p key={index}>{memo.data.memo}</p>
-        ))}
       </main>
 
       <Footer />

@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = ".next"
-   functions = "functions"
+  functions = "netlify/functions"
+  publish = "
 [[plugins]]
   package = "netlify-plugin-cypress"
