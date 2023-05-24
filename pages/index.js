@@ -5,6 +5,21 @@ import { useState } from 'react'
 
 export default function Home() {
   const [memo, setMemo] = useState('');
+  const [memos, setMemos] = useState([]);
+
+  useEffect(() => {
+    fetchMemos();
+  }, []);
+
+  const fetchMemos = async () => {
+    try {
+      const response = await fetch('/.netlify/functions/getMemos');
+      const data = await response.json();
+      setMemos(data);
+    } catch (error) {
+      console.error('Error fetching memos:', error);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -13,11 +28,12 @@ export default function Home() {
       method: 'POST',
       body: JSON.stringify({ memo }),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
     });
 
     setMemo('');
+    fetchMemos(); // Fetch updated memos after saving
   };
 
   return (
@@ -28,17 +44,19 @@ export default function Home() {
       </Head>
 
       <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
+        <h1>Welcome to my app!</h1>
         <form onSubmit={handleSubmit}>
           <textarea value={memo} onChange={(e) => setMemo(e.target.value)} />
           <button type="submit">Submit</button>
         </form>
-      </main>
 
-      <Footer />
+        <h2>Memos:</h2>
+        <ul>
+          {memos.map((memo, index) => (
+            <li key={index}>{memo}</li>
+          ))}
+        </ul>
+      </main>
     </div>
-  )
+  );
 }
