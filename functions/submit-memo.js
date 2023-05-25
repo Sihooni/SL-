@@ -13,6 +13,7 @@ exports.handler = async (event, context) => {
   const data = {
     name: params.get('name'),
     memo: params.get('memo'),
+    date: new Date().toISOString(),
   };
 
   try {

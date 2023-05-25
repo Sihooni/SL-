@@ -5,7 +5,7 @@ fetch('/.netlify/functions/get-memos')
 
     data.data.forEach(memo => {
       const memoElement = document.createElement('p');
-      memoElement.textContent = `${memo.data.name}: ${memo.data.memo}`;
+      memoElement.textContent = `${memo.data.name} (${memo.data.date}): ${memo.data.memo}`;
       memosDiv.appendChild(memoElement);
     });
   });
