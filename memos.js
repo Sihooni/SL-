@@ -1,20 +1,12 @@
-// Make a request to the serverless function to retrieve the stored memos
-fetch('/getMemos')
+// memos.js
+fetch('/.netlify/functions/get-memos')
   .then(response => response.json())
   .then(data => {
-    const memoList = document.getElementById('memoList');
+    const memosDiv = document.getElementById('memos');
 
-    if (data.length === 0) {
-      memoList.innerHTML = '<p>No memos found.</p>';
-    } else {
-      data.forEach(memo => {
-        const memoItem = document.createElement('p');
-        memoItem.textContent = memo.memo;
-        memoList.appendChild(memoItem);
-      });
-    }
-  })
-  .catch(error => {
-    console.error('Error retrieving memos:', error);
-    alert('An error occurred while retrieving the memos. Please try again.');
+    data.data.forEach(memo => {
+      const memoElement = document.createElement('p');
+      memoElement.textContent = memo.data.memo;
+      memosDiv.appendChild(memoElement);
+    });
   });

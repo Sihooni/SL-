@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Memo Form</title>
-  <script src="script.js"></script>
-</head>
-<body>
-  <h1>Memo Form</h1>
-  <form id="memoForm">
-    <textarea id="memoInput" rows="4" cols="50"></textarea>
-    <br>
-    <button type="submit">Submit</button>
-  </form>
-</body>
+  <head>
+    <title>Memo Form</title>
+  </head>
+  <body>
+    <h1>Memo Form</h1>
+    <form id="memo-form" action="/.netlify/functions/submit-memo" method="POST">
+      <label for="memo">Memo:</label><br>
+      <textarea id="memo" name="memo" rows="4" cols="50"></textarea><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
 </html>
