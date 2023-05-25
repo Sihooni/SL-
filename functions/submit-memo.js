@@ -34,33 +34,3 @@ exports.handler = async (event, context) => {
     };
   }
 };
-
-window.addEventListener('DOMContentLoaded', (event) => {
-  const form = document.getElementById('memo-form');
-  const messageDiv = document.getElementById('message');
-
-  form.addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const data = new URLSearchParams();
-    for (const pair of new FormData(form)) {
-      data.append(pair[0], pair[1]);
-    }
-
-    try {
-      const response = await fetch('/.netlify/functions/submit-memo', {
-        method: 'POST',
-        body: data,
-      });
-
-      if (response.ok) {
-        messageDiv.textContent = 'Submitted';
-        form.reset();
-      } else {
-        messageDiv.textContent = 'Submission failed';
-      }
-    } catch (error) {
-      messageDiv.textContent = 'Submission failed';
-    }
-  });
-});

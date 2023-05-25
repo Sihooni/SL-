@@ -2,17 +2,15 @@
 <html>
   <head>
     <title>Memo Form</title>
-    <script src="submit-memo.js"></script>
   </head>
   <body>
     <h1>Memo Form</h1>
-    <form id="memo-form">
+    <form action="/.netlify/functions/submit-memo" method="POST">
       <label for="name">Name:</label><br>
       <input type="text" id="name" name="name"><br>
       <label for="memo">Memo:</label><br>
       <textarea id="memo" name="memo"></textarea><br>
       <input type="submit" value="Submit">
     </form>
-    <div id="message"></div>
   </body>
 </html>
