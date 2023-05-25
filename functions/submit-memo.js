@@ -8,7 +8,10 @@ exports.handler = async (event, context) => {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const data = querystring.parse(event.body);
+  const params = new URLSearchParams(event.body);
+  const data = {
+    memo: params.get('memo'),
+  };
 
   try {
     const documentRecord = await faunaClient.query(
