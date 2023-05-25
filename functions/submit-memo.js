@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 303,
       headers: {
-        Location: '/memos.html',
+        Location: 'index.html',
       },
       body: '',
     };
