@@ -1,6 +1,7 @@
+// functions/submit-memo.js
 const faunadb = require('faunadb');
 
-const faunaClient = new faunadb.Client({ secret: 'fnAFEuSNDNAAUQrblZXy_EL1tBzZITohjySb5ouA' });
+const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET });
 const q = faunadb.query;
 
 exports.handler = async (event, context) => {
@@ -10,17 +11,21 @@ exports.handler = async (event, context) => {
 
   const params = new URLSearchParams(event.body);
   const data = {
+    name: params.get('name'),
     memo: params.get('memo'),
   };
 
   try {
-    const documentRecord = await faunaClient.query(
+    await faunaClient.query(
       q.Create(q.Collection('memos'), { data: data })
     );
 
     return {
-      statusCode: 200,
-      body: JSON.stringify(documentRecord),
+      statusCode: 303,
+      headers: {
+        Location: '/memos.html',
+      },
+      body: '',
     };
   } catch (error) {
     return {
