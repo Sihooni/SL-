@@ -34,3 +34,27 @@ exports.handler = async (event, context) => {
     };
   }
 };
+
+document.getElementById('memo-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const name = event.target.elements.name.value;
+  const memo = event.target.elements.memo.value;
+
+  fetch('/.netlify/functions/submit-memo', {
+    method: 'POST',
+    body: new URLSearchParams({
+      name: name,
+      memo: memo,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      document.getElementById('message').textContent = 'Failed to submit memo';
+    } else {
+      document.getElementById('message').textContent = 'Submitted';
+      event.target.reset();
+    }
+  });
+});
