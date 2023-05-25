@@ -35,26 +35,32 @@ exports.handler = async (event, context) => {
   }
 };
 
-document.getElementById('memo-form').addEventListener('submit', function(event) {
-  event.preventDefault();
+window.addEventListener('DOMContentLoaded', (event) => {
+  const form = document.getElementById('memo-form');
+  const messageDiv = document.getElementById('message');
 
-  const name = event.target.elements.name.value;
-  const memo = event.target.elements.memo.value;
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-  fetch('/.netlify/functions/submit-memo', {
-    method: 'POST',
-    body: new URLSearchParams({
-      name: name,
-      memo: memo,
-    }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.error) {
-      document.getElementById('message').textContent = 'Failed to submit memo';
-    } else {
-      document.getElementById('message').textContent = 'Submitted';
-      event.target.reset();
+    const data = new URLSearchParams();
+    for (const pair of new FormData(form)) {
+      data.append(pair[0], pair[1]);
+    }
+
+    try {
+      const response = await fetch('/.netlify/functions/submit-memo', {
+        method: 'POST',
+        body: data,
+      });
+
+      if (response.ok) {
+        messageDiv.textContent = 'Submitted';
+        form.reset();
+      } else {
+        messageDiv.textContent = 'Submission failed';
+      }
+    } catch (error) {
+      messageDiv.textContent = 'Submission failed';
     }
   });
 });
