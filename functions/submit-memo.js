@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 303,
       headers: {
-        Location: 'index.html',
+        Location: 'https://musicscorelibrary.netlify.app/demo/',
       },
       body: '',
     };
